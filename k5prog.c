@@ -172,6 +172,15 @@ void hdump(unsigned char *buf,int len)
 
 int openport(char *port,speed_t speed)
 {
+	char newPort[64];
+	if (strncmp(port, "COM", 3) == 0) {
+        // Extract the number after "COM"
+        const char *numberStr = port + 3;
+        int number = atoi(numberStr) - 1;
+        snprintf(newPort, sizeof(newPort), "/dev/ttyS%d", number);
+		port = newPort;
+    }
+
 	int fd;
 	struct termios my_termios;
 
